@@ -1,4 +1,4 @@
-import type { CategoriaNegocio, CartItem } from '@/types';
+import type { CategoriaNegocio, CartItem, ModalidadPedido, EstatusPedido } from '@/types';
 
 export function cn(...classes: (string | false | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -49,6 +49,27 @@ export const CATEGORIAS: { id: CategoriaNegocio; label: string; icon: string }[]
 
 export const ENVIO_FIJO = 35;
 
+export const ESTATUS_LABELS: Record<EstatusPedido, string> = {
+  pendiente: 'Pendiente',
+  preparacion: 'En preparación',
+  listo: 'Pedido listo',
+  camino: 'En camino',
+  entregado: 'Entregado',
+};
+
+export const ESTATUS_COLORS: Record<EstatusPedido, string> = {
+  pendiente: 'bg-orange-500/15 text-orange-400',
+  preparacion: 'bg-blue-500/15 text-blue-400',
+  listo: 'bg-purple-500/15 text-purple-400',
+  camino: 'bg-cyan-500/15 text-cyan-400',
+  entregado: 'bg-green-500/15 text-green-400',
+};
+
+export const MODALIDAD_LABELS: Record<ModalidadPedido, string> = {
+  recoger: 'Pasar a recoger',
+  domicilio: 'Envío a domicilio',
+};
+
 export function buildOrderMessage(
   items: CartItem[],
   subtotal: number,
@@ -57,20 +78,28 @@ export function buildOrderMessage(
   gpsLink: string | null,
   negocioNombre: string,
   clienteNombre: string,
-  clienteTelefono: string
+  clienteTelefono: string,
+  modalidad: ModalidadPedido,
+  direccionEntrega: string
 ): string {
   let msg = `*Nuevo Pedido - Vuelti*\n`;
   msg += `Negocio: ${negocioNombre}\n`;
   msg += `Cliente: ${clienteNombre}\n`;
-  msg += `Teléfono: ${clienteTelefono}\n\n`;
-  msg += `*Productos:*\n`;
+  msg += `Teléfono: ${clienteTelefono}\n`;
+  msg += `Modalidad: ${MODALIDAD_LABELS[modalidad]}\n`;
+  if (modalidad === 'domicilio' && direccionEntrega) {
+    msg += `Dirección de entrega: ${direccionEntrega}\n`;
+  }
+  msg += `\n*Productos:*\n`;
 
   items.forEach((item) => {
     msg += `• ${item.cantidad}x ${item.producto.nombre} - ${formatCurrency(item.producto.precio * item.cantidad)}\n`;
   });
 
   msg += `\nSubtotal: ${formatCurrency(subtotal)}\n`;
-  msg += `Envío: ${formatCurrency(envio)}\n`;
+  if (modalidad === 'domicilio') {
+    msg += `Envío: ${formatCurrency(envio)}\n`;
+  }
   msg += `*Total: ${formatCurrency(total)}*\n`;
 
   if (gpsLink) {
@@ -84,12 +113,18 @@ export function buildMandaditoMessage(
   descripcion: string,
   clienteNombre: string,
   clienteTelefono: string,
-  gpsLink: string | null
+  gpsLink: string | null,
+  modalidad: ModalidadPedido,
+  direccionEntrega: string
 ): string {
   let msg = `*Mandadito Express - Vuelti*\n`;
   msg += `Cliente: ${clienteNombre}\n`;
   msg += `Teléfono: ${clienteTelefono}\n`;
+  msg += `Modalidad: ${MODALIDAD_LABELS[modalidad]}\n`;
   msg += `Descripción: ${descripcion}\n`;
+  if (modalidad === 'domicilio' && direccionEntrega) {
+    msg += `Dirección de entrega: ${direccionEntrega}\n`;
+  }
 
   if (gpsLink) {
     msg += `\nMi ubicación:\n${gpsLink}`;

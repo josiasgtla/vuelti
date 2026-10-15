@@ -1,8 +1,9 @@
 export type EstatusRepartidor = 'disponible' | 'ocupado';
-export type EstatusPedido = 'pendiente' | 'entregado';
+export type EstatusPedido = 'pendiente' | 'preparacion' | 'listo' | 'camino' | 'entregado';
 export type CategoriaNegocio = 'comida' | 'antojos' | 'farmacia' | 'abarrotes';
 export type PagoStatus = 'pagado' | 'pendiente';
 export type TipoPedido = 'negocio' | 'mandadito';
+export type ModalidadPedido = 'recoger' | 'domicilio';
 
 export interface Repartidor {
   id: string;
@@ -58,6 +59,8 @@ export interface Pedido {
   items_json: CartItem[] | null;
   total: number;
   tipo: TipoPedido;
+  modalidad: ModalidadPedido;
+  direccion_entrega: string;
   repartidores?: Pick<Repartidor, 'id' | 'nombre'>;
   negocios?: Pick<Negocio, 'id' | 'nombre'>;
 }
