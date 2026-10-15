@@ -91,7 +91,7 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
                 : 'bg-navy-700/40 text-navy-200/50 hover:bg-navy-600/40'
             )}
           >
-            <Icon className="h-3.5 w-3.5" />
+            <Icon className={cn('h-3.5 w-3.5 transition-transform', active && 'animate-gentle-bounce')} />
             {cat.label}
           </button>
         );
@@ -111,9 +111,13 @@ export function MandaditoCard({ onClick }: MandaditoCardProps) {
       className="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500/20 via-orange-600/10 to-navy-800/30 p-4 text-left ring-1 ring-orange-500/20 transition-all hover:ring-orange-500/40 active:scale-[0.98]"
     >
       <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl transition-all group-hover:scale-150" />
+      <div className="absolute right-4 top-4 h-1.5 w-16 overflow-hidden rounded-full bg-orange-500/10">
+        <div className="h-full w-full animate-shimmer bg-gradient-to-r from-transparent via-orange-400/40 to-transparent" style={{ backgroundSize: '200% 100%' }} />
+      </div>
       <div className="relative flex items-center gap-3.5">
-        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30">
-          <Send className="h-7 w-7 text-white" />
+        <div className="relative flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30 animate-gentle-bounce">
+          <span className="absolute inset-0 rounded-2xl bg-orange-500/30 animate-pulse-ring" />
+          <Send className="relative h-7 w-7 text-white" />
         </div>
         <div className="flex-1">
           <h3 className="font-display text-base font-bold text-white">Mandadito Express</h3>

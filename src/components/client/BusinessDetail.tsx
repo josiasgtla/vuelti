@@ -56,7 +56,7 @@ export function BusinessDetail({ negocio, onBack }: BusinessDetailProps) {
       <div className="relative">
         <div className="h-44 w-full overflow-hidden bg-navy-800">
           {negocio.logo_url && (
-            <img src={negocio.logo_url} alt={negocio.nombre} className="h-full w-full object-cover" />
+            <img src={negocio.logo_url} alt={negocio.nombre} className="h-full w-full object-cover animate-fade-in" />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-navy-950/40 via-navy-950/30 to-navy-950" />
         </div>
@@ -103,12 +103,13 @@ export function BusinessDetail({ negocio, onBack }: BusinessDetailProps) {
             </div>
           ) : (
             <div className="space-y-3">
-              {productos.map((producto) => {
+              {productos.map((producto, idx) => {
                 const qty = getCartQuantity(producto.id);
                 return (
                   <div
                     key={producto.id}
-                    className="flex gap-3 rounded-xl border border-navy-600/40 bg-navy-700/30 p-3 transition-colors hover:border-navy-500/40"
+                    className="flex gap-3 rounded-xl border border-navy-600/40 bg-navy-700/30 p-3 transition-colors hover:border-navy-500/40 animate-stagger-in"
+                    style={{ animationDelay: `${idx * 60}ms` }}
                   >
                     <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-navy-700">
                       {producto.foto_url && (

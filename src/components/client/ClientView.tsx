@@ -4,7 +4,9 @@ import type { Negocio, CategoriaNegocio } from '@/types';
 import { HomeHeader, CategoryFilter, MandaditoCard, BusinessCard, SectionTitle } from './HomeParts';
 import { FullPageLoader } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Store, Bike } from 'lucide-react';
+import { Store, Bike, MapPin } from 'lucide-react';
+
+const HERO_IMAGE = 'https://images.pexels.com/photos/687824/pexels-photo-687824.jpeg?auto=compress&cs=tinysrgb&h=400&w=940&fit=crop';
 
 interface ClientViewProps {
   onBusinessClick: (negocio: Negocio) => void;
@@ -62,17 +64,26 @@ export function ClientView({ onBusinessClick, onMandaditoClick, onCartClick }: C
       <HomeHeader onCartClick={onCartClick} />
 
       <div className="mx-auto max-w-md px-4 py-4 space-y-5">
-        {/* Hero search area */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-800 to-navy-900 p-4 ring-1 ring-navy-600/30">
-          <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-orange-500/10 blur-2xl" />
-          <div className="relative flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/20">
-              <MapPin2 className="h-5 w-5 text-orange-500" />
+        {/* Hero banner with food image */}
+        <div className="relative overflow-hidden rounded-2xl ring-1 ring-navy-600/30 animate-stagger-in" style={{ animationDelay: '0ms' }}>
+          <div className="relative h-32 w-full overflow-hidden">
+            <img src={HERO_IMAGE} alt="Comida deliciosa" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy-950/80 to-transparent" />
+          </div>
+          <div className="absolute inset-0 flex flex-col justify-end p-4">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/20 backdrop-blur-sm animate-gentle-bounce">
+                <MapPin className="h-5 w-5 text-orange-500" />
+              </div>
+              <div>
+                <p className="text-xs text-navy-200/60">Entregando en</p>
+                <p className="text-sm font-bold text-white">Tihuatlán, Veracruz</p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-navy-200/40">Entregando en</p>
-              <p className="text-sm font-bold text-white">Tihuatlán, Veracruz</p>
-            </div>
+          </div>
+          <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-orange-500/20 backdrop-blur-sm">
+            <Bike className="h-4 w-4 text-orange-400 animate-gentle-bounce" style={{ animationDelay: '0.3s' }} />
           </div>
         </div>
 
@@ -97,12 +108,17 @@ export function ClientView({ onBusinessClick, onMandaditoClick, onCartClick }: C
             />
           ) : (
             <div className="space-y-2.5">
-              {filtered.map((negocio) => (
-                <BusinessCard
+              {filtered.map((negocio, idx) => (
+                <div
                   key={negocio.id}
-                  negocio={negocio}
-                  onClick={() => onBusinessClick(negocio)}
-                />
+                  className="animate-stagger-in"
+                  style={{ animationDelay: `${idx * 80}ms` }}
+                >
+                  <BusinessCard
+                    negocio={negocio}
+                    onClick={() => onBusinessClick(negocio)}
+                  />
+                </div>
               ))}
             </div>
           )}
@@ -115,15 +131,3 @@ export function ClientView({ onBusinessClick, onMandaditoClick, onCartClick }: C
     </div>
   );
 }
-
-function MapPin2() {
-  return (
-    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-}
-
-// Re-export Bike for potential use
-export { Bike };

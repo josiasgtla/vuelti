@@ -66,6 +66,26 @@ export default {
           '0%': { transform: 'translateY(-100%) scale(0.5)', opacity: '0' },
           '100%': { transform: 'translateY(0) scale(1)', opacity: '1' },
         },
+        'gentle-bounce': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+          '50%': { transform: 'translateY(-12px) rotate(3deg)' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        'stagger-in': {
+          '0%': { transform: 'translateY(20px) scale(0.95)', opacity: '0' },
+          '100%': { transform: 'translateY(0) scale(1)', opacity: '1' },
+        },
+        'pulse-ring': {
+          '0%': { transform: 'scale(0.8)', opacity: '0.8' },
+          '100%': { transform: 'scale(2.2)', opacity: '0' },
+        },
       },
       animation: {
         'slide-up': 'slide-up 0.3s ease-out',
@@ -75,6 +95,11 @@ export default {
         'cart-bounce': 'cart-bounce 0.5s ease-out',
         'pop-in': 'pop-in 0.3s ease-out',
         'count-up': 'count-up 0.3s ease-out',
+        'gentle-bounce': 'gentle-bounce 2s ease-in-out infinite',
+        'float-slow': 'float-slow 4s ease-in-out infinite',
+        'shimmer': 'shimmer 3s linear infinite',
+        'stagger-in': 'stagger-in 0.4s ease-out both',
+        'pulse-ring': 'pulse-ring 1.5s ease-out infinite',
       },
     },
   },
