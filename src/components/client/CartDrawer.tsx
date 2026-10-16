@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { X, ShoppingCart, MapPin, Navigation, Trash2, Plus, Minus, Send, Loader2, Store, Bike } from 'lucide-react';
 import { useCart } from '@/lib/cart';
-import { cn, formatCurrency, ENVIO_FIJO, buildOrderMessage, MODALIDAD_LABELS } from '@/lib/utils';
+import { cn, formatCurrency, ENVIO_FIJO, buildOrderMessage, MODALIDAD_LABELS, buildStoreWhatsAppLink } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
-import type { ShowToastFn, ModalidadPedido } from '@/types';
+import type { ShowToastFn, ModalidadPedido, Negocio } from '@/types';
 
 interface CartDrawerProps {
   open: boolean;

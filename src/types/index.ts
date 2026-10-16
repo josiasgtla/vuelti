@@ -36,6 +36,8 @@ export interface Negocio {
   pago_status: PagoStatus;
   created_at: string;
   productos?: Producto[];
+  pin: string | null;
+  tiene_repartidor_propio: boolean;
 }
 
 export interface CartItem {

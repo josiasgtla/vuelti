@@ -20,6 +20,22 @@ export function buildWhatsAppLink(phone: string, message: string): string {
   return `https://wa.me/${cleaned}?text=${encodeURIComponent(message)}`;
 }
 
+export function buildStoreWhatsAppLink(whatsapp: string, message: string): string {
+  const cleaned = whatsapp.replace(/[^0-9]/g, '');
+  if (!cleaned.startsWith('52')) {
+    return `https://wa.me/52${cleaned}?text=${encodeURIComponent(message)}`;
+  }
+  return `https://wa.me/${cleaned}?text=${encodeURIComponent(message)}`;
+}
+
+export function buildDriverWhatsAppLink(phone: string, message: string): string {
+  const cleaned = phone.replace(/[^0-9]/g, '');
+  if (!cleaned.startsWith('52')) {
+    return `https://wa.me/52${cleaned}?text=${encodeURIComponent(message)}`;
+  }
+  return `https://wa.me/${cleaned}?text=${encodeURIComponent(message)}`;
+}
+
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
@@ -114,15 +130,13 @@ export function buildMandaditoMessage(
   clienteNombre: string,
   clienteTelefono: string,
   gpsLink: string | null,
-  modalidad: ModalidadPedido,
   direccionEntrega: string
 ): string {
   let msg = `*Mandadito Express - Vuelti*\n`;
   msg += `Cliente: ${clienteNombre}\n`;
   msg += `Teléfono: ${clienteTelefono}\n`;
-  msg += `Modalidad: ${MODALIDAD_LABELS[modalidad]}\n`;
   msg += `Descripción: ${descripcion}\n`;
-  if (modalidad === 'domicilio' && direccionEntrega) {
+  if (direccionEntrega) {
     msg += `Dirección de entrega: ${direccionEntrega}\n`;
   }
 

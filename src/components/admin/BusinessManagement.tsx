@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Negocio, Producto, CategoriaNegocio, ShowToastFn } from '@/types';
-import { Plus, Trash2, X, Edit2, ChevronDown, ChevronUp, UtensilsCrossed, Package, Phone, MapPin, Clock, Link2, Store } from 'lucide-react';
+import { Plus, Trash2, X, Edit2, ChevronDown, ChevronUp, UtensilsCrossed, Package, Phone, MapPin, Clock, Link2, Store, KeyRound, Bike } from 'lucide-react';
 import { cn, formatCurrency, CATEGORIAS } from '@/lib/utils';
 import { Spinner } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -171,6 +171,14 @@ function BusinessRow({
             <div className="flex items-center gap-1.5"><MapPin className="h-3 w-3" /> {negocio.direccion}</div>
             <div className="flex items-center gap-1.5"><Clock className="h-3 w-3" /> {negocio.horario}</div>
             <div className="flex items-center gap-1.5"><Phone className="h-3 w-3" /> {negocio.whatsapp}</div>
+            <div className="flex items-center gap-1.5">
+              <KeyRound className="h-3 w-3" />
+              PIN: {negocio.pin ? <span className="font-mono font-semibold text-orange-400">{negocio.pin}</span> : <span className="text-red-400/60">Sin configurar</span>}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Bike className="h-3 w-3" />
+              Repartidor propio: {negocio.tiene_repartidor_propio ? <span className="font-semibold text-green-400">Sí</span> : <span className="font-semibold text-navy-200/30">No</span>}
+            </div>
           </div>
 
           {/* Products list */}
@@ -229,6 +237,8 @@ function BusinessForm({
   const [direccion, setDireccion] = useState(negocio?.direccion ?? '');
   const [horario, setHorario] = useState(negocio?.horario ?? '');
   const [whatsapp, setWhatsapp] = useState(negocio?.whatsapp ?? '');
+  const [pin, setPin] = useState(negocio?.pin ?? '');
+  const [tieneRepartidorPropio, setTieneRepartidorPropio] = useState(negocio?.tiene_repartidor_propio ?? false);
   const [saving, setSaving] = useState(false);
 
   // Products editing
@@ -283,6 +293,8 @@ function BusinessForm({
             direccion: direccion.trim(),
             horario: horario.trim(),
             whatsapp: whatsapp.trim(),
+            pin: pin.trim() || null,
+            tiene_repartidor_propio: tieneRepartidorPropio,
           })
           .eq('id', negocioId);
 
@@ -301,6 +313,8 @@ function BusinessForm({
             horario: horario.trim(),
             whatsapp: whatsapp.trim(),
             pago_status: 'pendiente',
+            pin: pin.trim() || null,
+            tiene_repartidor_propio: tieneRepartidorPropio,
           })
           .select()
           .single();
@@ -391,6 +405,48 @@ function BusinessForm({
           <FormField icon={<Phone className="h-4 w-4" />} label="WhatsApp *">
             <input value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} placeholder="522711234567" className="form-input" />
           </FormField>
+
+          <FormField icon={<KeyRound className="h-4 w-4" />} label="PIN de acceso (4 dígitos)">
+            <input
+              value={pin}
+              onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+              placeholder="1234"
+              maxLength={4}
+              className="form-input"
+              style={{ letterSpacing: '0.3em', fontFamily: 'monospace' }}
+            />
+          </FormField>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-navy-200/40">¿Tiene repartidor propio?</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setTieneRepartidorPropio(true)}
+                className={cn(
+                  'flex-1 rounded-lg py-2.5 text-xs font-bold transition-all active:scale-95',
+                  tieneRepartidorPropio
+                    ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
+                    : 'bg-navy-700/40 text-navy-200/40 hover:bg-navy-600/40'
+                )}
+              >
+                <Bike className="mx-auto mb-0.5 h-3.5 w-3.5" />
+                Sí
+              </button>
+              <button
+                type="button"
+                onClick={() => setTieneRepartidorPropio(false)}
+                className={cn(
+                  'flex-1 rounded-lg py-2.5 text-xs font-bold transition-all active:scale-95',
+                  !tieneRepartidorPropio
+                    ? 'bg-navy-500 text-white shadow-lg'
+                    : 'bg-navy-700/40 text-navy-200/40 hover:bg-navy-600/40'
+                )}
+              >
+                No
+              </button>
+            </div>
+          </div>
 
           {/* Products section */}
           <div className="pt-2">
